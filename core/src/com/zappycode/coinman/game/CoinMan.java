@@ -23,7 +23,7 @@ public class CoinMan extends ApplicationAdapter {
 	Texture dizzy;
 	int manState = 0;
 	int pause = 0;
-	float gravity = 0.2f;
+	float gravity = 0.5f;
 	float velocity = 0;
 	int manY = 0;
 	Rectangle manRectangle;
@@ -90,7 +90,7 @@ public class CoinMan extends ApplicationAdapter {
 		if (gameState==1){
 			//Game is alive
 			// BOMB
-			if (bombCount < 250) {
+			if (bombCount < 150) {
 				bombCount++;
 			} else {
 				bombCount = 0;
@@ -100,7 +100,7 @@ public class CoinMan extends ApplicationAdapter {
 			bombRectangles.clear();
 			for (int i=0;i < bombXs.size();i++) {
 				batch.draw(bomb, bombXs.get(i), bombYs.get(i));
-				bombXs.set(i, bombXs.get(i) - 8);
+				bombXs.set(i, bombXs.get(i) - 10);
 				bombRectangles.add(new Rectangle(bombXs.get(i), bombYs.get(i), bomb.getWidth(), bomb.getHeight()));
 			}
 
@@ -115,7 +115,7 @@ public class CoinMan extends ApplicationAdapter {
 			coinRectangles.clear();
 			for (int i=0;i < coinXs.size();i++) {
 				batch.draw(coin, coinXs.get(i), coinYs.get(i));
-				coinXs.set(i, coinXs.get(i) - 4);
+				coinXs.set(i, coinXs.get(i) - 10);
 				coinRectangles.add(new Rectangle(coinXs.get(i), coinYs.get(i), coin.getWidth(), coin.getHeight()));
 			}
 
@@ -123,7 +123,7 @@ public class CoinMan extends ApplicationAdapter {
 
 
 			if (Gdx.input.justTouched()) {
-				velocity = -10;
+				velocity = -15;
 			}
 
 			if (pause < 8) {
