@@ -105,7 +105,7 @@ public class CoinMan extends ApplicationAdapter {
 			//Game is alive
 			OuchSaid=false;
 			// BOMB
-			if (bombCount < 150) {
+			if (bombCount < 50) {
 				bombCount++;
 			} else {
 				bombCount = 0;
@@ -120,7 +120,7 @@ public class CoinMan extends ApplicationAdapter {
 			}
 
 			// COINS
-			if (coinCount < 100) {
+			if (coinCount < 50) {
 				coinCount++;
 			} else {
 				coinCount = 0;
@@ -185,11 +185,11 @@ public class CoinMan extends ApplicationAdapter {
 		}
 
 		if (gameState==2){
-			batch.draw(dizzy,Gdx.graphics.getWidth() / 2 - man[manState].getWidth() / 2,manY);
+			batch.draw(dizzy,Gdx.graphics.getWidth() / 2 - man[manState].getWidth(),manY);
 		}else {
-			batch.draw(man[manState],Gdx.graphics.getWidth() / 2 - man[manState].getWidth() / 2, manY);
+			batch.draw(man[manState],Gdx.graphics.getWidth() / 2 - man[manState].getWidth(), manY);
 		}
-		manRectangle = new Rectangle(Gdx.graphics.getWidth() / 2 - man[manState].getWidth() / 2, manY, man[manState].getWidth(), man[manState].getHeight());
+		manRectangle = new Rectangle(Gdx.graphics.getWidth() / 2 - man[manState].getWidth() , manY, man[manState].getWidth(), man[manState].getHeight());
 
 		for (int i=0; i < coinRectangles.size();i++) {
 			if (Intersector.overlaps(manRectangle, coinRectangles.get(i))) {
