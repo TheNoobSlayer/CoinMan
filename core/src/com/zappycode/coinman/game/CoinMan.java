@@ -2,6 +2,8 @@ package com.zappycode.coinman.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,6 +30,11 @@ public class CoinMan extends ApplicationAdapter {
 	int manY = 0;
 	Rectangle manRectangle;
 	BitmapFont font;
+	Sound ouch;
+	Sound jump;
+	Sound coinSound;
+	Music bgMusic;
+	boolean OuchSaid=false;
 
 	int score = 0;
 
@@ -51,6 +58,13 @@ public class CoinMan extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		background = new Texture("bg.png");
+		ouch=Gdx.audio.newSound(Gdx.files.internal("ouch.mp3"));
+		coinSound=Gdx.audio.newSound(Gdx.files.internal("coin.mp3"));
+		jump=Gdx.audio.newSound(Gdx.files.internal("jump.mp3"));
+		bgMusic=Gdx.audio.newMusic(Gdx.files.internal("loca-salsa.wav"));
+		bgMusic.setLooping(true);
+		bgMusic.setVolume(0.1f);
+		bgMusic.play();
 		man = new Texture[4];
 		man[0] = new Texture("frame-1.png");
 		man[1] = new Texture("frame-2.png");
@@ -89,6 +103,7 @@ public class CoinMan extends ApplicationAdapter {
 
 		if (gameState==1){
 			//Game is alive
+			OuchSaid=false;
 			// BOMB
 			if (bombCount < 150) {
 				bombCount++;
@@ -124,6 +139,7 @@ public class CoinMan extends ApplicationAdapter {
 
 			if (Gdx.input.justTouched()) {
 				velocity = -15;
+				jump.play();
 			}
 
 			if (pause < 8) {
@@ -151,6 +167,7 @@ public class CoinMan extends ApplicationAdapter {
 			}
 		}else if (gameState==2){
 			//Game over
+
 			if (Gdx.input.justTouched()){
 				gameState=1;
 				manY = Gdx.graphics.getHeight() / 2;
@@ -178,6 +195,7 @@ public class CoinMan extends ApplicationAdapter {
 			if (Intersector.overlaps(manRectangle, coinRectangles.get(i))) {
 				score++;
 
+				coinSound.play();
 				coinRectangles.remove(i);
 				coinXs.remove(i);
 				coinYs.remove(i);
@@ -187,7 +205,13 @@ public class CoinMan extends ApplicationAdapter {
 
 		for (int i=0; i < bombRectangles.size();i++) {
 			if (Intersector.overlaps(manRectangle, bombRectangles.get(i))) {
+
 				Gdx.app.log("Bomb!", "Collision!");
+
+				if (OuchSaid==false){
+					ouch.play();
+					OuchSaid=true;
+				}
 				gameState=2;
 			}
 		}
@@ -200,5 +224,9 @@ public class CoinMan extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		ouch.dispose();
+		coin.dispose();
+		jump.dispose();
+		bgMusic.dispose();
 	}
 }
